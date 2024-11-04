@@ -180,16 +180,16 @@ const DashboardContainer: FC<DashboardContainerProps> = ({ topLevelTabs }) => {
             fullWidth={false}
             animated={false}
             allowOverflow
+            let isScrolling = false;
             onFocus={e => {
               if (
-                // prevent scrolling when tabbing to the tab pane
                 e.target.classList.contains('ant-tabs-tabpane') &&
-                window.scrollY < TOP_OF_PAGE_RANGE
+                window.scrollY < TOP_OF_PAGE_RANGE &&
+                !isScrolling
               ) {
-                // prevent window from jumping down when tabbing
-                // if already at the top of the page
-                // to help with accessibility when using keyboard navigation
-                window.scrollTo(window.scrollX, 0);
+                isScrolling = true;
+                window.scrollTo(0, 0);
+                setTimeout(() => (isScrolling = false), 100); // Reset lock after short delay
               }
             }}
           >
